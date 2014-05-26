@@ -1,0 +1,18 @@
+Get ws4d-java-se-full-dpws-with-security.jar from:
+
+ http://sourceforge.net/projects/ws4d-javame/files/ws4d-jmeds-v2/framework/v2.0.0-beta10/jars/general/
+
+and install it locally in Maven repository:
+
+ $ mvn install:install-file \
+	-Dfile=ws4d-java-se-full-dpws-with-security.jar \
+	-DgroupId=org.ws4d \
+	-DartifactId=ws4d-java-se-full-dpws-with-security \
+	-Dversion=2.0.0-beta10 \
+	-Dpackaging=jar
+
+Build the binary distribution package with:
+
+ $ mvn package
+
+The distribution binary file is available as ./target/raft-0.1-SNAPSHOT-bin.zip.
