@@ -146,7 +146,11 @@ public class Server extends DefaultDevice {
         this.state = state;
     }
 
-    public Integer getLastLogTerm() {
+    public State getState() {
+		return state;
+	}
+
+	public Integer getLastLogTerm() {
         return log.getLastLogTerm();
     }
 
