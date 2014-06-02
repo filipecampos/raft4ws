@@ -7,7 +7,7 @@
     <fileSets>
         <fileSet>
             <includes>
-                <include>README</include>
+                <include>README.md</include>
             </includes>
         </fileSet>
         <fileSet>

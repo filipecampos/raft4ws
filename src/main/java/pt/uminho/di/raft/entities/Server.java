@@ -187,7 +187,6 @@ public class Server extends DefaultDevice {
             if (state != State.Follower) {
                 logger.debug(getIdString() + "Switching to " + State.Follower + " state...");
                 timeoutTask.setNextState(State.Follower);
-//                timeoutTask.heartbeat();
             }
         }
 
@@ -240,9 +239,9 @@ public class Server extends DefaultDevice {
 
             logger.debug(getIdString() + "Leader got " + numDevices + " replicas.");
             if (numDevices > 0) {
-                entry.setMajorityResponses(numDevices); // replicas only; (numDevices + 1) // replicas + leader
+                entry.setMajorityResponses(numDevices + 1); // replicas + leader
                 // leader response
-//                entry.addLeaderResponse();
+                entry.addLeaderResponse();
                 // invoke AppendEntries on replicas to propagate new entry
                 timeoutTask.notifyTask();
             } else {
@@ -274,10 +273,6 @@ public class Server extends DefaultDevice {
                 logger.debug(getIdString() + "No known leader! Setting " + leaderId + " as new leader.");
                 setNewLeader(leaderId);
                 newLeader = true;
-                //        } else if (!leaderURI.equalsWsdRfc3986(leaderId)) {
-                // TODO: check this out! leaderId (new leader) or leaderURI (current leader)
-                //            logger.debug(getIdString() + "Received heartbeat from different leader " + leaderId + ". Previous was " + leaderURI);
-                //            setNewLeader(leaderId);
             }
         } else {
             newLeader = voteRequest;
@@ -339,7 +334,6 @@ public class Server extends DefaultDevice {
         } else {
             logger.debug(getIdString() + "Running Candidate task..." + System.currentTimeMillis());
             currentRole.execute();
-//            CoreFramework.getThreadPool().execute(currentRole);
         }
 
         logger.debug(getIdString() + "Started candidate role." + System.currentTimeMillis());
@@ -351,7 +345,6 @@ public class Server extends DefaultDevice {
         leaderURI = votedFor;
         currentRole = new LeaderTask(this);
         timeoutTask.setTimeoutPeriod(electionTimeout);
-//        timeoutTask.setTimeoutPeriod(electionTimeout / 2); // for debug purposes only
 
         logger.debug(getIdString() + "Started leader role." + System.currentTimeMillis());
     }

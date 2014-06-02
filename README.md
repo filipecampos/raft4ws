@@ -2,8 +2,10 @@ Raft4WS - Raft for Web Services
 =======
 
 Raft4WS is an implementation of the [Raft distributed consensus protocol]
-(https://ramcloud.stanford.edu/wiki/download/attachments/11370504/raft.pdf "In Search of an Understandable Consensus Algorithm").
-on 
+(https://ramcloud.stanford.edu/wiki/download/attachments/11370504/raft.pdf "In Search of an Understandable Consensus Algorithm")
+on the 
+[WS4D](http://ws4d.org/ "Web Services for Devices") 
+[JMEDS Framework v2.0 beta10](http://ws4d.e-technik.uni-rostock.de/jmeds/ "WS4D.org Java Multi Edition DPWS Stack")
 
 ## Release History
 
@@ -16,7 +18,7 @@ Raft4WS implements the following features of Raft:
 - Leader election
 - Log replication
 
-Advanced features, such as Log compaction or online cluster reconfiguration, still don't have an implementation timeline.
+Advanced features, such as log compaction or online cluster reconfiguration, still don't have an implementation timeline.
 
 ## Installing and using Raft4WS 
 

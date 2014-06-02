@@ -18,6 +18,7 @@ package pt.uminho.di.raft.entities;
 
 import java.io.Console;
 import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
 import org.ws4d.java.CoreFramework;
 import org.ws4d.java.service.reference.DeviceReference;
 import pt.uminho.di.raft.service.log.LogEntry;
@@ -131,7 +132,7 @@ public class Client extends BasicClient {
 
     public static void main(String[] args) {
         // configure loggers
-//        PropertyConfigurator.configure("log4j.properties");
+        PropertyConfigurator.configure("log4j.properties");
 
         // mandatory: Starting the DPWS Framework.
         CoreFramework.start(args);
