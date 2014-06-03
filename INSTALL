@@ -15,4 +15,4 @@ Build the binary distribution package with:
 
  $ mvn package
 
-The distribution binary file is available as ./target/raft-0.1-SNAPSHOT-bin.zip.
+The distribution binary file is available as ./target/raft4ws-0.1-bin.zip.

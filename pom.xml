@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>pt.uminho.di</groupId>
   <artifactId>raft4ws</artifactId>
-  <version>0.1-SNAPSHOT</version>
+  <version>0.1</version>
   <name>Raft4WS - Raft for Web Services</name>
   <description>Implementation of the Raft consensus protocol in the WS4D DPWS stack.</description>
 

@@ -23,7 +23,7 @@ Advanced features, such as log compaction or online cluster reconfiguration, sti
 ## Installing and using Raft4WS 
 
 Follow the instructions on the INSTALL file to build the binary distribution package.
-It will be located at ./target/raft4ws-0.1-SNAPSHOT-bin.zip.
+It will be located at ./target/raft4ws-0.1-bin.zip.
 Extract the contents of the zip file and follow the following instructions to execute a Raft server or client.
 
 - To run a Raft server:
