@@ -41,7 +41,7 @@ public class Client extends BasicClient {
             while (running) {
                 try
                 {
-                    String option = c.readLine(prompt);
+                    String option = sanitizeParameter(c.readLine(prompt));
                     logger.debug("Received the following option " + option);
                     if((c != null) && running && !option.isEmpty())
                     {
@@ -71,19 +71,30 @@ public class Client extends BasicClient {
     }
 
     private void insertCommand(Console c) {
-        String command = c.readLine(command_prompt);
+        String command = sanitizeParameter(c.readLine(command_prompt));
         logger.debug("Received the following command " + command);
 
-        String params = c.readLine(parameters_prompt);
+        String params = sanitizeParameter(c.readLine(parameters_prompt));
         logger.debug("Received the following parameters " + params);
 
         // invoke insert command
         LogEntry entry = invokeInsertCommandOp(command, params);
         c.printf("Invoked insert command and received %s\n", entry.toShortString());
     }
+    
+    private String sanitizeParameter(String str)
+    {
+    	if(str == null)
+    	{
+    		return "";
+    	}
+    	
+    	return str;
+    }
+    
 
     private void readData(Console c) {
-        String option = c.readLine(read_prompt);
+        String option = sanitizeParameter(c.readLine(read_prompt));
         logger.debug("Received the following option " + option);
 
         int op = Integer.parseInt(option);
@@ -92,7 +103,7 @@ public class Client extends BasicClient {
             
             case 1:
                 // get specific entry
-                uid = c.readLine(entry_prompt);
+                uid = sanitizeParameter(c.readLine(entry_prompt));
                 c.printf("Retrieving the entry with UID %s\n", uid);
             case 2:
                 // get last entry
