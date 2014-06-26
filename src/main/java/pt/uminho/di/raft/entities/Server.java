@@ -22,6 +22,8 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Random;
+
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 import org.ws4d.java.CoreFramework;
@@ -65,6 +67,8 @@ public class Server extends DefaultDevice {
     URI votedFor;
     Log log;
     private Integer electionTimeout = 10000;
+    private Integer minElectionTimeout = 10000;
+    private Integer maxElectionTimeout = 10000;
     HashMap<EndpointReference, Integer> nextIndex;
     HashMap<EndpointReference, Integer> matchIndex;
     State state;
@@ -73,6 +77,7 @@ public class Server extends DefaultDevice {
     ServerClient client;
     RaftService raftService;
     private URI leaderURI;
+    private Random random = new Random(System.currentTimeMillis());
 
     public Server(String id) {
         super(DPWSCommunicationManager.COMMUNICATION_MANAGER_ID);
@@ -124,13 +129,24 @@ public class Server extends DefaultDevice {
     public Integer getElectionTimeout() {
         return electionTimeout;
     }
+    
+    public Integer getMinElectionTimeout() {
+		return minElectionTimeout;
+	}
 
-    public void setElectionTimeout(Integer electionTimeout) {
-        this.electionTimeout = electionTimeout;
-        timeoutTask.setTimeoutPeriod(electionTimeout);
-    }
+	public void setMinElectionTimeout(Integer minElectionTimeout) {
+		this.minElectionTimeout = minElectionTimeout;
+	}
 
-    public int getLastApplied() {
+	public Integer getMaxElectionTimeout() {
+		return maxElectionTimeout;
+	}
+
+	public void setMaxElectionTimeout(Integer maxElectionTimeout) {
+		this.maxElectionTimeout = maxElectionTimeout;
+	}
+
+	public int getLastApplied() {
         return log.getLastApplied();
     }
 
@@ -319,7 +335,7 @@ public class Server extends DefaultDevice {
         logger.debug(getIdString() + "Starting Follower role..." + System.currentTimeMillis());
         currentRole = new FollowerTask(this);
         state = State.Follower;
-        timeoutTask.setTimeoutPeriod(electionTimeout);
+        timeoutTask.setTimeoutPeriod(minElectionTimeout);
         logger.debug(getIdString() + "Finished starting follower role." + System.currentTimeMillis());
     }
 
@@ -327,7 +343,7 @@ public class Server extends DefaultDevice {
         logger.debug(getIdString() + "Starting Candidate role..." + System.currentTimeMillis());
         currentRole = new CandidateTask(this);
         state = State.Candidate;
-        timeoutTask.setTimeoutPeriod(electionTimeout);
+        timeoutTask.setTimeoutPeriod(minElectionTimeout);
         if (debug) {
             logger.debug(getIdString() + "Setting Candidate role to not evolve to Leader automatically...");
             currentRole.setRunning(false);
@@ -344,7 +360,7 @@ public class Server extends DefaultDevice {
         state = State.Leader;
         leaderURI = votedFor;
         currentRole = new LeaderTask(this);
-        timeoutTask.setTimeoutPeriod(electionTimeout);
+        timeoutTask.setTimeoutPeriod(minElectionTimeout);
 
         logger.debug(getIdString() + "Started leader role." + System.currentTimeMillis());
     }
@@ -451,13 +467,20 @@ public class Server extends DefaultDevice {
         PropertyConfigurator.configure("log4j.properties");
 
         String id = "";
-        Integer election_timeout = 60000; // 1 minute
+        
+        // default Raft values
+        Integer min_election_timeout = 150;
+        Integer max_election_timeout = 300;
 
         switch (args.length) {
-            case 2:
-                election_timeout = Integer.parseInt(args[1]);
+            case 3:
+                min_election_timeout = Integer.parseInt(args[1]);
+                max_election_timeout = Integer.parseInt(args[2]);
             case 1:
                 id = args[0];
+            case 0:
+            	logger.error("Usage: ./bin/server <id> <min_timeout(ms)> <max_timeout(ms)>");
+            	return;
         }
 
         try {
@@ -472,7 +495,9 @@ public class Server extends DefaultDevice {
 
             ServerClient client = new ServerClient(device);
             device.setClient(client);
-            device.setElectionTimeout(election_timeout);
+            device.setMinElectionTimeout(min_election_timeout);
+            device.setMaxElectionTimeout(max_election_timeout);
+            device.resetElectionTimeout();
 
             org.ws4d.java.util.Log.setLogLevel(org.ws4d.java.util.Log.DEBUG_LEVEL_ERROR);
 
@@ -483,5 +508,10 @@ public class Server extends DefaultDevice {
             logger.error(e.getMessage(), e);
         }
     }
+
+	public void resetElectionTimeout() {
+		electionTimeout = minElectionTimeout + random.nextInt(maxElectionTimeout-minElectionTimeout);
+	    timeoutTask.setTimeoutPeriod(electionTimeout);
+	}
 
 }

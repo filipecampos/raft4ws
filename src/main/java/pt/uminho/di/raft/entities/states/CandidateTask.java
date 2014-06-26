@@ -78,7 +78,11 @@ public class CandidateTask extends ServerStateTask {
         URI raftSvcAddress = getServer().getRaftService().getAddress();
         getServer().setVotedFor(raftSvcAddress);
         addVote(new EndpointReference(raftSvcAddress));
-
+        
+//        *      -Reset election timeout
+        server.resetElectionTimeout();
+        
+//        *      -Send RequestVote RPCs to all other servers
         if(!majorityAchieved && (knownDevices > 0))
         {            
             votingTasks = new ArrayList<VoteRequestingTask>(knownDevices);

@@ -28,7 +28,7 @@ Extract the contents of the zip file and follow the following instructions to ex
 
 - To run a Raft server:
 
- $ ./bin/server <id> <timeout(ms)>
+ $ ./bin/server <id> <min_timeout(ms)> <max_timeout(ms)>
 
 - To run a Raft client:
 
