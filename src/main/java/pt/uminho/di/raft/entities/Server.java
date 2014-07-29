@@ -66,9 +66,9 @@ public class Server extends DefaultDevice {
     int currentTerm;
     URI votedFor;
     Log log;
-    private Integer electionTimeout = 10000;
-    private Integer minElectionTimeout = 10000;
-    private Integer maxElectionTimeout = 10000;
+    private Integer electionTimeout = 1000;
+    private Integer minElectionTimeout = 150;
+    private Integer maxElectionTimeout = 300;
     HashMap<EndpointReference, Integer> nextIndex;
     HashMap<EndpointReference, Integer> matchIndex;
     State state;
