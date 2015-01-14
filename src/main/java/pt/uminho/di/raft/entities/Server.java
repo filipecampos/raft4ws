@@ -479,11 +479,11 @@ public class Server extends DefaultDevice {
             case 3:
                 min_election_timeout = Integer.parseInt(args[1]);
                 max_election_timeout = Integer.parseInt(args[2]);
-                break;
             case 1:
                 id = args[0];
                 break;
-            case 0:
+                
+            default:
             	logger.error("Usage: ./bin/server <id> <min_timeout(ms)> <max_timeout(ms)>");
             	return;
         }
