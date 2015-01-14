@@ -19,6 +19,7 @@ package pt.uminho.di.raft.entities;
 import pt.uminho.di.raft.entities.states.CandidateTask;
 import pt.uminho.di.raft.entities.states.State;
 import java.io.IOException;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -464,7 +465,9 @@ public class Server extends DefaultDevice {
 
     public static void main(String[] args) {
         // configure loggers
-        PropertyConfigurator.configure("log4j.properties");
+        ClassLoader loader = Thread.currentThread().getContextClassLoader();
+        URL url = loader.getResource("log4j.properties");
+        PropertyConfigurator.configure(url);
 
         String id = "";
         
