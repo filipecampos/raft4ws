@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014 Filipe Campos.
+ * Copyright (c) 2014-2025 Filipe Campos.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,24 +19,22 @@ package pt.uminho.di.raft.entities.workers;
 import org.apache.log4j.Logger;
 import pt.uminho.di.raft.service.log.Log;
 
-public class CommittingTask /* extends ServerWorkingTask */ extends Thread {
+public class CommittingTask extends Thread {
 
-    static Logger logger = Logger.getLogger(CommittingTask.class);
+  static Logger logger = Logger.getLogger(CommittingTask.class);
 
-    private Log log;
-    private String idString;
+  private Log log;
+  private String idString;
 
-    public CommittingTask(Log log, String str)
-    {
-        this.log = log;
-        idString = str;
-    }
+  public CommittingTask(Log log, String str) {
+    this.log = log;
+    idString = str;
+  }
 
-    @Override
-    public void run()
-    {
-        logger.debug(idString + "Committing Log Entries...");
-        log.checkCommittedEntries();
-        logger.debug(idString + "Committing Log Entries ended.");
-    }
+  @Override
+  public void run() {
+    logger.debug(idString + "Committing Log Entries...");
+    log.checkCommittedEntries();
+    logger.debug(idString + "Committing Log Entries ended.");
+  }
 }

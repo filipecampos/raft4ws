@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014 Filipe Campos.
+ * Copyright (c) 2014-2025 Filipe Campos.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,32 +21,28 @@ import pt.uminho.di.raft.entities.Server;
 
 public class FollowerTask extends ServerStateTask {
 
-    static Logger logger = Logger.getLogger(FollowerTask.class);
+  static Logger logger = Logger.getLogger(FollowerTask.class);
 
-    public FollowerTask(Server srv)
-    {
-        super(srv);
-    }
+  public FollowerTask(Server srv) {
+    super(srv);
+  }
 
-    @Override
-    public void timeout()
-    {
-        // •	If election timeout elapses without receiving AppendEntries RPC
-        // from current leader or granting vote to candidate: convert to candidate
-          getServer().getTimeoutTask().setNextState(pt.uminho.di.raft.entities.states.State.Candidate);
-          getServer().getTimeoutTask().notifyTask();
-    }
+  @Override
+  public void timeout() {
+    // •	If election timeout elapses without receiving AppendEntries RPC
+    // from current leader or granting vote to candidate: convert to candidate
+    getServer().getTimeoutTask().setNextState(pt.uminho.di.raft.entities.states.State.Candidate);
+    getServer().getTimeoutTask().notifyTask();
+  }
 
-    @Override
-    public void heartbeat()
-    {
-        logger.debug(getServer().getIdString() + "Follower processing heartbeat...");
-        getServer().getTimeoutTask().heartbeat();
-    }
+  @Override
+  public void heartbeat() {
+    logger.debug(getServer().getIdString() + "Follower processing heartbeat...");
+    getServer().getTimeoutTask().heartbeat();
+  }
 
-    @Override
-    public void execute()
-    {
-        // do nothing
-    }
+  @Override
+  public void execute() {
+    // do nothing
+  }
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014 Filipe Campos.
+ * Copyright (c) 2014-2025 Filipe Campos.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,25 +16,20 @@
 
 package pt.uminho.di.raft.entities.workers;
 
-import org.apache.log4j.Logger;
 import pt.uminho.di.raft.entities.Server;
 import pt.uminho.di.raft.entities.ServerClient;
 
 public class SearchingTask extends ServerWorkingTask {
 
-    static Logger logger = Logger.getLogger(SearchingTask.class);
+  private ServerClient serverClient;
 
-    private ServerClient serverClient;
+  public SearchingTask(ServerClient cli, Server srv) {
+    super(srv);
+    serverClient = cli;
+  }
 
-    public SearchingTask(ServerClient cli, Server srv)
-    {
-        super(srv);
-        serverClient = cli;
-    }
-
-    @Override
-    public void run()
-    {
-        serverClient.searchRaftDevices();
-    }
+  @Override
+  public void run() {
+    serverClient.searchRaftDevices();
+  }
 }

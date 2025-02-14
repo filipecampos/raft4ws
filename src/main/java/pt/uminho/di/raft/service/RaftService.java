@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014 Filipe Campos.
+ * Copyright (c) 2014-2025 Filipe Campos.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,61 +29,46 @@ import pt.uminho.di.raft.service.operations.RequestVoteOperation;
 
 public class RaftService extends DefaultService {
 
-    static Logger logger = Logger.getLogger(RaftService.class);
+  static Logger logger = Logger.getLogger(RaftService.class);
 
-    protected Server server;
+  protected Server server;
 
-    private RequestVoteOperation requestVoteOp;
-    private AppendEntriesOperation appendEntriesOp;
-    protected InsertCommandOperation insertCommandOp;
-    protected ReadOperation readOp;
-    
-    public RaftService(Server s)
-    {
-        server = s;
+  private RequestVoteOperation requestVoteOp;
+  private AppendEntriesOperation appendEntriesOp;
+  protected InsertCommandOperation insertCommandOp;
+  protected ReadOperation readOp;
 
-        setServiceId(Constants.RaftServiceId);
+  public RaftService(Server s) {
+    server = s;
 
-        server.setRaftService(this);
+    setServiceId(Constants.RaftServiceId);
 
-        initializeOperations();
-    }
+    server.setRaftService(this);
 
-    public void initializeOperations()
-    {
-        requestVoteOp = new RequestVoteOperation(server);
-        addOperation(requestVoteOp);
-        appendEntriesOp = new AppendEntriesOperation(server);
-        addOperation(appendEntriesOp);
-        insertCommandOp = new InsertCommandOperation(server);
-        addOperation(insertCommandOp);
-        readOp = new ReadOperation(server);
-        addOperation(readOp);
-    }
+    initializeOperations();
+  }
 
-    public AppendEntriesOperation getAppendEntriesOp()
-    {
-        return appendEntriesOp;
-    }
+  public void initializeOperations() {
+    requestVoteOp = new RequestVoteOperation(server);
+    addOperation(requestVoteOp);
+    appendEntriesOp = new AppendEntriesOperation(server);
+    addOperation(appendEntriesOp);
+    insertCommandOp = new InsertCommandOperation(server);
+    addOperation(insertCommandOp);
+    readOp = new ReadOperation(server);
+    addOperation(readOp);
+  }
 
-    public RequestVoteOperation getRequestVoteOp()
-    {
-        return requestVoteOp;
-    }
+  public AppendEntriesOperation getAppendEntriesOp() {
+    return appendEntriesOp;
+  }
 
-    public InsertCommandOperation getInsertCommandOp()
-    {
-        return insertCommandOp;
-    }
+  public RequestVoteOperation getRequestVoteOp() {
+    return requestVoteOp;
+  }
 
-    public ReadOperation getReadOp() {
-        return readOp;
-    }
-
-    public URI getAddress()
-    {
-        EprInfo eprInfo = (EprInfo) getEprInfos().next();
-        return eprInfo.getXAddress();
-    }
-    
+  public URI getAddress() {
+    EprInfo eprInfo = (EprInfo) getEprInfos().next();
+    return eprInfo.getXAddress();
+  }
 }

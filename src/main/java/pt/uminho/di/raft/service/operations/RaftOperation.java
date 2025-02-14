@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014 Filipe Campos.
+ * Copyright (c) 2014-2025 Filipe Campos.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,18 +22,17 @@ import pt.uminho.di.raft.entities.Server;
 
 public abstract class RaftOperation extends Operation {
 
-    protected Server server;
+  protected Server server;
 
-    public RaftOperation(Server s, String opName, QName portType)
-    {
-        super(opName, portType);
-        server = s;
+  public RaftOperation(Server s, String opName, QName portType) {
+    super(opName, portType);
+    server = s;
 
-        initInput();
-        initOutput();
-    }
+    initInput();
+    initOutput();
+  }
 
-    public abstract void initInput();
+  public abstract void initInput();
 
-    public abstract void initOutput();
+  public abstract void initOutput();
 }

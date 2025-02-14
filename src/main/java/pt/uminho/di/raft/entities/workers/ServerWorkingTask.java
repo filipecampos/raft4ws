@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014 Filipe Campos.
+ * Copyright (c) 2014-2025 Filipe Campos.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,42 +16,38 @@
 
 package pt.uminho.di.raft.entities.workers;
 
-import pt.uminho.di.raft.entities.*;
 import org.apache.log4j.Logger;
+import pt.uminho.di.raft.entities.*;
 
 public abstract class ServerWorkingTask extends Thread {
 
-    static Logger logger = Logger.getLogger(ServerWorkingTask.class);
+  static Logger logger = Logger.getLogger(ServerWorkingTask.class);
 
-    boolean running = true;
-    Server server;
+  boolean running = true;
+  Server server;
 
-    public ServerWorkingTask(Server s)
-    {
-        server = s;
-    }
+  public ServerWorkingTask(Server s) {
+    server = s;
+  }
 
-    public boolean isRunning()
-    {
-        return running;
-    }
+  public boolean isRunning() {
+    return running;
+  }
 
-    public void setRunning(boolean running)
-    {
-//        logger.debug(server.getIdString() + this.toString() + " Set running to " + running);
-        this.running = running;
-    }
+  public void setRunning(boolean running) {
+    logger.debug(server.getIdString() + this.toString() + " Set running to " + running);
+    this.running = running;
+  }
 
-    public Server getServer() {
-        return server;
-    }
+  public Server getServer() {
+    return server;
+  }
 
-    public void setServer(Server server) {
-        this.server = server;
-    }
-    
-    public void terminate()
-    {
-        setRunning(false);
-    }
+  public void setServer(Server server) {
+    this.server = server;
+  }
+
+  public void terminate() {
+    setRunning(false);
+  }
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014 Filipe Campos.
+ * Copyright (c) 2014-2025 Filipe Campos.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,23 +23,21 @@ import pt.uminho.di.raft.entities.ServerClient;
 
 public class InsertingTask extends ServerWorkingTask {
 
-    static Logger logger = Logger.getLogger(InsertingTask.class);
+  static Logger logger = Logger.getLogger(InsertingTask.class);
 
-    private ServerClient serverClient;
-    private EndpointReference epr;
+  private ServerClient serverClient;
+  private EndpointReference epr;
 
-    public InsertingTask(ServerClient cli, Server srv, EndpointReference e)
-    {
-        super(srv);
-        serverClient = cli;
-        epr = e;
-    }
+  public InsertingTask(ServerClient cli, Server srv, EndpointReference e) {
+    super(srv);
+    serverClient = cli;
+    epr = e;
+  }
 
-    @Override
-    public void run()
-    {
-        logger.debug(getServer().getIdString() + "Inserting Task started for EPR:" + epr);
-        serverClient.insertServer(epr);
-        logger.debug(getServer().getIdString() + "Inserting Task ended.");
-    }
+  @Override
+  public void run() {
+    logger.debug(getServer().getIdString() + "Inserting Task started for EPR:" + epr);
+    serverClient.insertServer(epr);
+    logger.debug(getServer().getIdString() + "Inserting Task ended.");
+  }
 }

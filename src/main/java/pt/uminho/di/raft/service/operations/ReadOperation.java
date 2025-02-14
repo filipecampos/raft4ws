@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014 Filipe Campos.
+ * Copyright (c) 2014-2025 Filipe Campos.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,149 +31,136 @@ import pt.uminho.di.raft.entities.Server;
 import pt.uminho.di.raft.service.log.LogEntry;
 
 /**
+ * - If command received from client: append entry to local log, respond after entry applied to
+ * state machine (§5.3)
  *
+ * <p>Arguments -command - command to execute -parameters - parameters for the command
  *
- * -	If command received from client: append entry to local log, respond after entry applied to state machine (§5.3)
- *
- * Arguments
- * -command - command to execute
- * -parameters - parameters for the command
- *
- * Results:
- * -success - true if command was applied correctly to log and state machine
+ * <p>Results: -success - true if command was applied correctly to log and state machine
  */
 public class ReadOperation extends RaftOperation {
 
-    static final Logger logger = Logger.getLogger(ReadOperation.class);
+  static final Logger logger = Logger.getLogger(ReadOperation.class);
 
-    public ReadOperation(Server s)
-    {
-        super(s, Constants.ReadOperationName, Constants.RaftServiceQName);
-    }
+  public ReadOperation(Server s) {
+    super(s, Constants.ReadOperationName, Constants.RaftServiceQName);
+  }
 
-    @Override
-    public void initInput()
-    {
-        ComplexType commandType = new ComplexType(Constants.ReadRequestTypeQName, ComplexType.CONTAINER_SEQUENCE);
-        Element uidElem = new Element(Constants.UidElementQName, SchemaUtil.TYPE_ANYURI);
-        commandType.addElement(uidElem);
-        uidElem.setMinOccurs(0);
-        
-        Element request = new Element(Constants.ReadRequestElementQName, commandType);
-        setInput(request);
-    }
+  @Override
+  public void initInput() {
+    ComplexType commandType =
+        new ComplexType(Constants.ReadRequestTypeQName, ComplexType.CONTAINER_SEQUENCE);
+    Element uidElem = new Element(Constants.UidElementQName, SchemaUtil.TYPE_ANYURI);
+    commandType.addElement(uidElem);
+    uidElem.setMinOccurs(0);
 
-    @Override
-    public void initOutput()
-    {
-        Element entryUidElem = new Element(Constants.UidElementQName, SchemaUtil.TYPE_ANYURI);
-        entryUidElem.setMinOccurs(0);
-        Element entryIndexElem = new Element(Constants.IndexElementQName, SchemaUtil.TYPE_INTEGER);
-        entryIndexElem.setMinOccurs(0);
-        Element entryTermElem = new Element(Constants.TermElementQName, SchemaUtil.TYPE_INTEGER);
-        entryTermElem.setMinOccurs(0);
-        Element entryCommandElem = new Element(Constants.CommandElementQName, SchemaUtil.TYPE_STRING);
-        entryCommandElem.setMinOccurs(0);
-        Element entryParametersElem = new Element(Constants.ParametersElementQName, SchemaUtil.TYPE_STRING);
-        entryParametersElem.setMinOccurs(0);
-        Element successElem = new Element(Constants.SuccessElementQName, SchemaUtil.TYPE_BOOLEAN);
-        Element resultElem = new Element(Constants.ResultElementQName, SchemaUtil.TYPE_STRING);
-        resultElem.setMinOccurs(0);
-        Element leaderElem = new Element(Constants.LeaderAddressElementQName, SchemaUtil.TYPE_ANYURI);
-        leaderElem.setMinOccurs(0);
+    Element request = new Element(Constants.ReadRequestElementQName, commandType);
+    setInput(request);
+  }
 
-        ComplexType responseType = new ComplexType(Constants.ReadResponseTypeQName, ComplexType.CONTAINER_SEQUENCE);
-        responseType.addElement(entryUidElem);
-        responseType.addElement(entryIndexElem);
-        responseType.addElement(entryTermElem);
-        responseType.addElement(entryCommandElem);
-        responseType.addElement(entryParametersElem);
-        responseType.addElement(successElem);
-        responseType.addElement(resultElem);
-        responseType.addElement(leaderElem);
+  @Override
+  public void initOutput() {
+    Element entryUidElem = new Element(Constants.UidElementQName, SchemaUtil.TYPE_ANYURI);
+    entryUidElem.setMinOccurs(0);
+    Element entryIndexElem = new Element(Constants.IndexElementQName, SchemaUtil.TYPE_INTEGER);
+    entryIndexElem.setMinOccurs(0);
+    Element entryTermElem = new Element(Constants.TermElementQName, SchemaUtil.TYPE_INTEGER);
+    entryTermElem.setMinOccurs(0);
+    Element entryCommandElem = new Element(Constants.CommandElementQName, SchemaUtil.TYPE_STRING);
+    entryCommandElem.setMinOccurs(0);
+    Element entryParametersElem =
+        new Element(Constants.ParametersElementQName, SchemaUtil.TYPE_STRING);
+    entryParametersElem.setMinOccurs(0);
+    Element successElem = new Element(Constants.SuccessElementQName, SchemaUtil.TYPE_BOOLEAN);
+    Element resultElem = new Element(Constants.ResultElementQName, SchemaUtil.TYPE_STRING);
+    resultElem.setMinOccurs(0);
+    Element leaderElem = new Element(Constants.LeaderAddressElementQName, SchemaUtil.TYPE_ANYURI);
+    leaderElem.setMinOccurs(0);
 
-        Element response = new Element(Constants.ReadResponseElementQName, responseType);
-        setOutput(response);
-    }
+    ComplexType responseType =
+        new ComplexType(Constants.ReadResponseTypeQName, ComplexType.CONTAINER_SEQUENCE);
+    responseType.addElement(entryUidElem);
+    responseType.addElement(entryIndexElem);
+    responseType.addElement(entryTermElem);
+    responseType.addElement(entryCommandElem);
+    responseType.addElement(entryParametersElem);
+    responseType.addElement(successElem);
+    responseType.addElement(resultElem);
+    responseType.addElement(leaderElem);
 
-    @Override
-    protected ParameterValue invokeImpl(ParameterValue pv, CredentialInfo ci) throws InvocationException, CommunicationException
-    {
-        ParameterValue response = createOutputValue();
-        boolean responseSuccess = false;
+    Element response = new Element(Constants.ReadResponseElementQName, responseType);
+    setOutput(response);
+  }
 
-        if(server.isLeader())
-        {
-            Object responseResult = "";
-            try
-            {
-                // server is the current leader. so process invocation and reply
+  @Override
+  protected ParameterValue invokeImpl(ParameterValue pv, CredentialInfo ci)
+      throws InvocationException, CommunicationException {
+    ParameterValue response = createOutputValue();
+    boolean responseSuccess = false;
 
-                // check if there is a uid specified in the request
-                String uid = ParameterValueManagement.getString(pv, Constants.UidElementName);
-                
-                logger.debug(server.getIdString() + "Going to retrieve entry with uid=" + uid);
+    if (server.isLeader()) {
+      Object responseResult = "";
+      try {
+        // server is the current leader. so process invocation and reply
 
-                LogEntry entry = null;
-                if((uid != null) && (!uid.isEmpty()))
-                {
-                    // Checks if entry exists and retrieve it
-                    entry = server.getLogEntry(uid);
-                }
-                else
-                {
-                    // Get last entry
-                    entry = server.getLogEntry(server.getLastLogIndex());
-                }
+        // check if there is a uid specified in the request
+        String uid = ParameterValueManagement.getString(pv, Constants.UidElementName);
 
-                if(entry != null)
-                {
-                    responseResult = entry.getResult();
-                    responseSuccess = true;
-                    ParameterValueManagement.setString(response, Constants.UidElementName, entry.getUid());
-                    ParameterValueManagement.setString(response, Constants.IndexElementName, entry.getIndex().toString());
-                    ParameterValueManagement.setString(response, Constants.TermElementName, entry.getTerm().toString());
-                    ParameterValueManagement.setString(response, Constants.CommandElementName, entry.getCommand());
-                    ParameterValueManagement.setString(response, Constants.ParametersElementName, entry.getParameters().toString());
-                }
-                else
-                {
-                    // no entry
-                    responseResult = "Didn't get any entry!";
-                }
-            }
-            catch(Exception ex)
-            {
-                logger.error(ex.getMessage(), ex);
-                responseSuccess = false;
-                responseResult = ex.getMessage();
-            }
-            
-            ParameterValueManagement.setString(response, Constants.ResultElementName, responseResult.toString());
+        logger.debug(server.getIdString() + "Going to retrieve entry with uid=" + uid);
+
+        LogEntry entry = null;
+        if ((uid != null) && (!uid.isEmpty())) {
+          // Checks if entry exists and retrieve it
+          entry = server.getLogEntry(uid);
+        } else {
+          // Get last entry
+          entry = server.getLogEntry(server.getLastLogIndex());
         }
-        else
-        {
-            // server is not the leader. so point client to current leader
-            URI leaderAddress = server.getLeaderAddress();
-            String address = "unknown";
-            if(leaderAddress != null)
-                address = leaderAddress.toString();
-            ParameterValueManagement.setString(response, Constants.LeaderAddressElementName, address); // URI for Raft Service
+
+        if (entry != null) {
+          responseResult = entry.getResult();
+          responseSuccess = true;
+          ParameterValueManagement.setString(response, Constants.UidElementName, entry.getUid());
+          ParameterValueManagement.setString(
+              response, Constants.IndexElementName, entry.getIndex().toString());
+          ParameterValueManagement.setString(
+              response, Constants.TermElementName, entry.getTerm().toString());
+          ParameterValueManagement.setString(
+              response, Constants.CommandElementName, entry.getCommand());
+          ParameterValueManagement.setString(
+              response, Constants.ParametersElementName, entry.getParameters().toString());
+        } else {
+          // no entry
+          responseResult = "Didn't get any entry!";
         }
-        ParameterValueManagement.setString(response, Constants.SuccessElementName, "" + responseSuccess);
+      } catch (Exception ex) {
+        logger.error(ex.getMessage(), ex);
+        responseSuccess = false;
+        responseResult = ex.getMessage();
+      }
 
-        return response;
+      ParameterValueManagement.setString(
+          response, Constants.ResultElementName, responseResult.toString());
+    } else {
+      // server is not the leader. so point client to current leader
+      URI leaderAddress = server.getLeaderAddress();
+      String address = "unknown";
+      if (leaderAddress != null) address = leaderAddress.toString();
+      ParameterValueManagement.setString(
+          response, Constants.LeaderAddressElementName, address); // URI for Raft Service
     }
+    ParameterValueManagement.setString(
+        response, Constants.SuccessElementName, "" + responseSuccess);
 
-    public ParameterValue getRequestPV(String uid)
-    {
-        ParameterValue pv = createInputValue();
+    return response;
+  }
 
-        if((uid != null) && (!uid.isEmpty()))
-            ParameterValueManagement.setString(pv, Constants.UidElementName, uid);
+  public ParameterValue getRequestPV(String uid) {
+    ParameterValue pv = createInputValue();
 
-        return pv;
-    }
+    if ((uid != null) && (!uid.isEmpty()))
+      ParameterValueManagement.setString(pv, Constants.UidElementName, uid);
 
-    
+    return pv;
+  }
 }

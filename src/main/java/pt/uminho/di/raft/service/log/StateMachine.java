@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014 Filipe Campos.
+ * Copyright (c) 2014-2025 Filipe Campos.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,12 +18,11 @@ package pt.uminho.di.raft.service.log;
 
 public interface StateMachine {
 
-    void initialize(String id);
+  void initialize(String id);
 
-    void initializeDB();
+  void initializeDB();
 
-    boolean insertIntoDB(LogEntry entry);
+  boolean insertIntoDB(LogEntry entry);
 
-    void shutdown();
-
+  void shutdown();
 }

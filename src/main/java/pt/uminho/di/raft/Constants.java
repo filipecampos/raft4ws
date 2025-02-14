@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014 Filipe Campos.
+ * Copyright (c) 2014-2025 Filipe Campos.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,141 +21,165 @@ import org.ws4d.java.types.URI;
 
 public abstract class Constants {
 
-    public final static String NameSpace = "http://di.uminho.pt/ws/2014/01/raft";
+  public static final int NumLogEntries = 15000;
+  public static final int DefaultElectionTimeout = 1000;
+  public static final int DefaultMinElectionTimeout = 150;
+  public static final int DefaultMaxElectionTimeout = 300;
 
-    public final static String RaftDeviceName = "RAFT_Device";
-    public final static QName RaftDeviceQName = new QName(RaftDeviceName, NameSpace);
-    // RAFT Service
-    public final static String RaftServiceName = "RAFT_Service";
-    public final static QName RaftServiceQName = new QName(RaftServiceName, NameSpace);
-    public final static URI RaftServiceId = new URI(RaftServiceName);
+  public static final String NameSpace = "http://di.uminho.pt/ws/2014/01/raft";
 
-    public final static String ServerPortName = "ServerPortType";
-    public final static QName ServerPortQName = new QName(ServerPortName, NameSpace);
+  public static final String RaftDeviceName = "RAFT_Device";
+  public static final QName RaftDeviceQName = new QName(RaftDeviceName, NameSpace);
+  // RAFT Service
+  public static final String RaftServiceName = "RAFT_Service";
+  public static final QName RaftServiceQName = new QName(RaftServiceName, NameSpace);
+  public static final URI RaftServiceId = new URI(RaftServiceName);
 
-    // RequestVote
-    public final static String RequestVoteOperationName = "RequestVote";
-    public final static QName RequestVoteOperationQName = new QName(RequestVoteOperationName, NameSpace);
+  public static final String ServerPortName = "ServerPortType";
+  public static final QName ServerPortQName = new QName(ServerPortName, NameSpace);
 
-    public final static String RequestVoteRequestTypeName = "RequestVoteRequestType";
-    public final static QName RequestVoteRequestTypeQName = new QName(RequestVoteRequestTypeName, NameSpace);
+  // RequestVote
+  public static final String RequestVoteOperationName = "RequestVote";
+  public static final QName RequestVoteOperationQName =
+      new QName(RequestVoteOperationName, NameSpace);
 
-    public final static String RequestVoteRequestElementName = "RequestVoteRequest";
-    public final static QName RequestVoteRequestElementQName = new QName(RequestVoteRequestElementName, NameSpace);
+  public static final String RequestVoteRequestTypeName = "RequestVoteRequestType";
+  public static final QName RequestVoteRequestTypeQName =
+      new QName(RequestVoteRequestTypeName, NameSpace);
 
-    public final static String RequestVoteResponseTypeName = "RequestVoteResponseType";
-    public final static QName RequestVoteResponseTypeQName = new QName(RequestVoteResponseTypeName, NameSpace);
+  public static final String RequestVoteRequestElementName = "RequestVoteRequest";
+  public static final QName RequestVoteRequestElementQName =
+      new QName(RequestVoteRequestElementName, NameSpace);
 
-    public final static String RequestVoteResponseElementName = "RequestVoteResponse";
-    public final static QName RequestVoteResponseElementQName = new QName(RequestVoteResponseElementName, NameSpace);
+  public static final String RequestVoteResponseTypeName = "RequestVoteResponseType";
+  public static final QName RequestVoteResponseTypeQName =
+      new QName(RequestVoteResponseTypeName, NameSpace);
 
-    // AppendEntries
-    public final static String AppendEntriesOperationName = "AppendEntries";
-    public final static QName AppendEntriesOperationQName = new QName(AppendEntriesOperationName, NameSpace);
+  public static final String RequestVoteResponseElementName = "RequestVoteResponse";
+  public static final QName RequestVoteResponseElementQName =
+      new QName(RequestVoteResponseElementName, NameSpace);
 
-    public final static String AppendEntriesRequestTypeName = "AppendEntriesRequestType";
-    public final static QName AppendEntriesRequestTypeQName = new QName(AppendEntriesRequestTypeName, NameSpace);
+  // AppendEntries
+  public static final String AppendEntriesOperationName = "AppendEntries";
+  public static final QName AppendEntriesOperationQName =
+      new QName(AppendEntriesOperationName, NameSpace);
 
-    public final static String AppendEntriesRequestElementName = "AppendEntriesRequest";
-    public final static QName AppendEntriesRequestElementQName = new QName(AppendEntriesRequestElementName, NameSpace);
+  public static final String AppendEntriesRequestTypeName = "AppendEntriesRequestType";
+  public static final QName AppendEntriesRequestTypeQName =
+      new QName(AppendEntriesRequestTypeName, NameSpace);
 
-    public final static String AppendEntriesResponseTypeName = "AppendEntriesResponseType";
-    public final static QName AppendEntriesResponseTypeQName = new QName(AppendEntriesResponseTypeName, NameSpace);
+  public static final String AppendEntriesRequestElementName = "AppendEntriesRequest";
+  public static final QName AppendEntriesRequestElementQName =
+      new QName(AppendEntriesRequestElementName, NameSpace);
 
-    public final static String AppendEntriesResponseElementName = "AppendEntriesResponse";
-    public final static QName AppendEntriesResponseElementQName = new QName(AppendEntriesResponseElementName, NameSpace);
+  public static final String AppendEntriesResponseTypeName = "AppendEntriesResponseType";
+  public static final QName AppendEntriesResponseTypeQName =
+      new QName(AppendEntriesResponseTypeName, NameSpace);
 
-    public final static URI emptyURI = new URI("");
-    public final static String EntriesTypeName = "EntriesType";
-    public final static QName EntriesTypeQName = new QName(EntriesTypeName, NameSpace);
+  public static final String AppendEntriesResponseElementName = "AppendEntriesResponse";
+  public static final QName AppendEntriesResponseElementQName =
+      new QName(AppendEntriesResponseElementName, NameSpace);
 
-    public final static String EntryTypeName = "EntryType";
-    public final static QName EntryTypeQName = new QName(EntryTypeName, NameSpace);
+  public static final URI emptyURI = new URI("");
+  public static final String EntriesTypeName = "EntriesType";
+  public static final QName EntriesTypeQName = new QName(EntriesTypeName, NameSpace);
 
-    // InsertCommand
-    public final static String InsertCommandOperationName = "InsertCommand";
-    public final static QName InsertCommandOperationQName = new QName(InsertCommandOperationName, NameSpace);
+  public static final String EntryTypeName = "EntryType";
+  public static final QName EntryTypeQName = new QName(EntryTypeName, NameSpace);
 
-    public final static String InsertCommandRequestElementName = "InsertCommandRequest";
-    public final static QName InsertCommandRequestElementQName = new QName(InsertCommandRequestElementName, NameSpace);
+  // InsertCommand
+  public static final String InsertCommandOperationName = "InsertCommand";
+  public static final QName InsertCommandOperationQName =
+      new QName(InsertCommandOperationName, NameSpace);
 
-    public final static String InsertCommandResponseElementName = "InsertCommandResponse";
-    public final static QName InsertCommandResponseElementQName = new QName(InsertCommandResponseElementName, NameSpace);
+  public static final String InsertCommandRequestElementName = "InsertCommandRequest";
+  public static final QName InsertCommandRequestElementQName =
+      new QName(InsertCommandRequestElementName, NameSpace);
 
-    public final static String InsertCommandResponseTypeName = "InsertCommandResponseType";
-    public final static QName InsertCommandResponseTypeQName = new QName(InsertCommandResponseTypeName, NameSpace);
+  public static final String InsertCommandResponseElementName = "InsertCommandResponse";
+  public static final QName InsertCommandResponseElementQName =
+      new QName(InsertCommandResponseElementName, NameSpace);
 
-    // Read
-    public final static String ReadOperationName = "Read";
-    public final static QName ReadOperationQName = new QName(ReadOperationName, NameSpace);
+  public static final String InsertCommandResponseTypeName = "InsertCommandResponseType";
+  public static final QName InsertCommandResponseTypeQName =
+      new QName(InsertCommandResponseTypeName, NameSpace);
 
-    public final static String ReadRequestElementName = "ReadRequest";
-    public final static QName ReadRequestElementQName = new QName(ReadRequestElementName, NameSpace);
+  // Read
+  public static final String ReadOperationName = "Read";
+  public static final QName ReadOperationQName = new QName(ReadOperationName, NameSpace);
 
-    public final static String ReadResponseElementName = "ReadResponse";
-    public final static QName ReadResponseElementQName = new QName(ReadResponseElementName, NameSpace);
+  public static final String ReadRequestElementName = "ReadRequest";
+  public static final QName ReadRequestElementQName = new QName(ReadRequestElementName, NameSpace);
 
-    public final static String ReadRequestTypeName = "ReadRequestType";
-    public final static QName ReadRequestTypeQName = new QName(ReadRequestTypeName, NameSpace);
+  public static final String ReadResponseElementName = "ReadResponse";
+  public static final QName ReadResponseElementQName =
+      new QName(ReadResponseElementName, NameSpace);
 
-    public final static String ReadResponseTypeName = "ReadResponseType";
-    public final static QName ReadResponseTypeQName = new QName(ReadResponseTypeName, NameSpace);
+  public static final String ReadRequestTypeName = "ReadRequestType";
+  public static final QName ReadRequestTypeQName = new QName(ReadRequestTypeName, NameSpace);
 
-    // parameters
-    public final static String TermElementName = "term";
-    public final static QName TermElementQName = new QName(TermElementName, NameSpace);
+  public static final String ReadResponseTypeName = "ReadResponseType";
+  public static final QName ReadResponseTypeQName = new QName(ReadResponseTypeName, NameSpace);
 
-    public final static String CandidateIdElementName = "candidateId";
-    public final static QName CandidateIdElementQName = new QName(CandidateIdElementName, NameSpace);
+  // parameters
+  public static final String TermElementName = "term";
+  public static final QName TermElementQName = new QName(TermElementName, NameSpace);
 
-    public final static String LastLogIndexElementName = "lastLogIndex";
-    public final static QName LastLogIndexElementQName = new QName(LastLogIndexElementName, NameSpace);
+  public static final String CandidateIdElementName = "candidateId";
+  public static final QName CandidateIdElementQName = new QName(CandidateIdElementName, NameSpace);
 
-    public final static String LastLogTermElementName = "lastLogTerm";
-    public final static QName LastLogTermElementQName = new QName(LastLogTermElementName, NameSpace);
+  public static final String LastLogIndexElementName = "lastLogIndex";
+  public static final QName LastLogIndexElementQName =
+      new QName(LastLogIndexElementName, NameSpace);
 
-    public final static String VoteGrantedElementName = "voteGranted";
-    public final static QName VoteGrantedElementQName = new QName(VoteGrantedElementName, NameSpace);
+  public static final String LastLogTermElementName = "lastLogTerm";
+  public static final QName LastLogTermElementQName = new QName(LastLogTermElementName, NameSpace);
 
-    public final static String LeaderIdElementName = "leaderId";
-    public final static QName LeaderIdElementQName = new QName("leaderId", NameSpace);
+  public static final String VoteGrantedElementName = "voteGranted";
+  public static final QName VoteGrantedElementQName = new QName(VoteGrantedElementName, NameSpace);
 
-    public final static String PrevLogIndexElementName = "prevLogIndex";
-    public final static QName PrevLogIndexElementQName = new QName(PrevLogIndexElementName, NameSpace);
+  public static final String LeaderIdElementName = "leaderId";
+  public static final QName LeaderIdElementQName = new QName("leaderId", NameSpace);
 
-    public final static String PrevLogTermElementName = "prevLogTerm";
-    public final static QName PrevLogTermElementQName = new QName(PrevLogTermElementName, NameSpace);
+  public static final String PrevLogIndexElementName = "prevLogIndex";
+  public static final QName PrevLogIndexElementQName =
+      new QName(PrevLogIndexElementName, NameSpace);
 
-    public final static String IndexElementName = "index";
-    public final static QName IndexElementQName = new QName(IndexElementName, NameSpace);
+  public static final String PrevLogTermElementName = "prevLogTerm";
+  public static final QName PrevLogTermElementQName = new QName(PrevLogTermElementName, NameSpace);
 
-    public final static String CommandElementName = "command";
-    public final static QName CommandElementQName = new QName(CommandElementName, NameSpace);
+  public static final String IndexElementName = "index";
+  public static final QName IndexElementQName = new QName(IndexElementName, NameSpace);
 
-    public final static String ParametersElementName = "parameters";
-    public final static QName ParametersElementQName = new QName(ParametersElementName, NameSpace);
+  public static final String CommandElementName = "command";
+  public static final QName CommandElementQName = new QName(CommandElementName, NameSpace);
 
-    public final static String EntryElementName = "entry";
-    public final static QName EntryElementQName = new QName(EntryElementName, NameSpace);
+  public static final String ParametersElementName = "parameters";
+  public static final QName ParametersElementQName = new QName(ParametersElementName, NameSpace);
 
-    public final static String EntriesElementName = "entries";
-    public final static QName EntriesElementQName = new QName(EntriesElementName, NameSpace);
+  public static final String EntryElementName = "entry";
+  public static final QName EntryElementQName = new QName(EntryElementName, NameSpace);
 
-    public final static String LeaderCommitElementName = "leaderCommit";
-    public final static QName LeaderCommitElementQName = new QName(LeaderCommitElementName, NameSpace);
+  public static final String EntriesElementName = "entries";
+  public static final QName EntriesElementQName = new QName(EntriesElementName, NameSpace);
 
-    public final static String SuccessElementName = "success";
-    public final static QName SuccessElementQName = new QName(SuccessElementName, NameSpace);
+  public static final String LeaderCommitElementName = "leaderCommit";
+  public static final QName LeaderCommitElementQName =
+      new QName(LeaderCommitElementName, NameSpace);
 
-    public final static String CommandTypeName = "CommandType";
-    public final static QName CommandTypeQName = new QName(CommandTypeName, NameSpace);
+  public static final String SuccessElementName = "success";
+  public static final QName SuccessElementQName = new QName(SuccessElementName, NameSpace);
 
-    public final static String UidElementName = "uid";
-    public final static QName UidElementQName = new QName(UidElementName, Constants.NameSpace);
+  public static final String CommandTypeName = "CommandType";
+  public static final QName CommandTypeQName = new QName(CommandTypeName, NameSpace);
 
-    public final static String ResultElementName = "result";
-    public final static QName ResultElementQName = new QName(ResultElementName, Constants.NameSpace);
+  public static final String UidElementName = "uid";
+  public static final QName UidElementQName = new QName(UidElementName, Constants.NameSpace);
 
-    public final static String LeaderAddressElementName = "leaderAddress";
-    public final static QName LeaderAddressElementQName = new QName(LeaderAddressElementName, Constants.NameSpace);
+  public static final String ResultElementName = "result";
+  public static final QName ResultElementQName = new QName(ResultElementName, Constants.NameSpace);
+
+  public static final String LeaderAddressElementName = "leaderAddress";
+  public static final QName LeaderAddressElementQName =
+      new QName(LeaderAddressElementName, Constants.NameSpace);
 }

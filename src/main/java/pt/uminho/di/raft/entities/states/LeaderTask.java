@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014 Filipe Campos.
+ * Copyright (c) 2014-2025 Filipe Campos.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,41 +21,42 @@ import pt.uminho.di.raft.entities.Server;
 
 public class LeaderTask extends ServerStateTask {
 
-    static Logger logger = Logger.getLogger(LeaderTask.class);
+  static Logger logger = Logger.getLogger(LeaderTask.class);
 
-    public LeaderTask(Server srv) {
-        super(srv);
+  public LeaderTask(Server srv) {
+    super(srv);
 
-        getServer().initializeLeaderVariables();
-        
-        // •	Upon election:
-                //          send initial empty AppendEntries RPCs (heartbeat) to each server;
-                //          repeat during idle periods to prevent election timeouts (§5.2)
-        getServer().sendHeartbeatOrEntries(false);
+    getServer().initializeLeaderVariables();
 
-        logger.debug(getServer().getIdString() + " LeaderTask has initialized!");
-    }
+    // •	Upon election:
+    //          send initial empty AppendEntries RPCs (heartbeat) to each server;
+    //          repeat during idle periods to prevent election timeouts (§5.2)
+    getServer().sendHeartbeatOrEntries(false);
 
-    @Override
-    public void execute()
-    {
-        getServer().sendHeartbeatOrEntries(true);
-    }
+    logger.debug(getServer().getIdString() + " LeaderTask has initialized!");
+  }
 
-    @Override
-    public void timeout() {
-        logger.debug(getServer().getIdString() + " Leader sending heartbeats or entries...");
-        // •	Upon election:
-                //          send initial empty AppendEntries RPCs (heartbeat) to each server;
-                //          repeat during idle periods to prevent election timeouts (§5.2)
-        execute();
-    }
+  @Override
+  public void execute() {
+    getServer().sendHeartbeatOrEntries(true);
+  }
 
-    @Override
-    public void heartbeat() {
-        logger.error(getServer().getIdString() + "Leader received heartbeat from another leader! Stepping down...");
-        // turn into follower
-        getServer().getTimeoutTask().setNextState(pt.uminho.di.raft.entities.states.State.Follower);
-        getServer().getTimeoutTask().heartbeat();
-    }
+  @Override
+  public void timeout() {
+    logger.debug(getServer().getIdString() + " Leader sending heartbeats or entries...");
+    // •	Upon election:
+    //          send initial empty AppendEntries RPCs (heartbeat) to each server;
+    //          repeat during idle periods to prevent election timeouts (§5.2)
+    execute();
+  }
+
+  @Override
+  public void heartbeat() {
+    logger.error(
+        getServer().getIdString()
+            + "Leader received heartbeat from another leader! Stepping down...");
+    // turn into follower
+    getServer().getTimeoutTask().setNextState(pt.uminho.di.raft.entities.states.State.Follower);
+    getServer().getTimeoutTask().heartbeat();
+  }
 }

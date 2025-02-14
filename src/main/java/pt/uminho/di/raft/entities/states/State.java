@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014 Filipe Campos.
+ * Copyright (c) 2014-2025 Filipe Campos.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@
 package pt.uminho.di.raft.entities.states;
 
 public enum State {
-    Follower,
-    Candidate,
-    Leader
+  Follower,
+  Candidate,
+  Leader
 }
